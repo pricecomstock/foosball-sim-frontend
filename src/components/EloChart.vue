@@ -1,10 +1,12 @@
 <script>
 import { Line } from 'vue-chartjs'
 export default {
+    name: 'elochart',
     extends: Line,
     props: {
         players: {required: true},
-        elos: {required: true}
+        elos: {required: true},
+        games: {required: false}
     },
     data () {
         return {
@@ -12,7 +14,7 @@ export default {
             options: {
                 elements: {
                     line: {
-                        tension: 0, // disables bezier curves
+                        tension: 0.5, // disables bezier curves
                     }
                 }
             }
@@ -21,18 +23,9 @@ export default {
     methods: {
         getLineColor (playerName) { // we have traditional special colors
             const colorMap = {
-                Price: '#F66',
-                Tritz: '#66F',
-                Elliott: '#6F6'
-            }
-
-            return colorMap[playerName]
-        },
-        getBackgroundColor (playerName) { // we have traditional special colors
-            const colorMap = {
-                Price: 'rgba(255, 0, 0, 0.05)',
-                Tritz: 'rgba(0, 0, 255, 0.05)',
-                Elliott: 'rgba(0, 255, 0, 0.05)'
+                Price: '#66F',
+                Tritz: '#F66',
+                Elliott: '#6C6'
             }
 
             return colorMap[playerName]
@@ -55,7 +48,7 @@ export default {
                     label: dataset.player,
                     data: dataset.elos,
                     borderColor: this.getLineColor(dataset.player),
-                    backgroundColor: this.getBackgroundColor(dataset.player)
+                    backgroundColor: 'rgba(0,0,0,0)'
                 }
             })
         }
