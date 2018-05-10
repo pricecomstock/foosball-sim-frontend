@@ -23,12 +23,18 @@ export default {
     methods: {
         getLineColor (playerName) { // we have traditional special colors
             const colorMap = {
-                Price: '#66F',
-                Tritz: '#F66',
-                Elliott: '#6C6'
+                Price: '#66D',
+                Tritz: '#D66',
+                Elliott: '#8C8',
+                Mark: '#B82',
+                Joe: '#ADF',
+                Erick: '#FA4',
+                Bijan: '#C7D',
+                Harsh: '#FAF'
             }
 
-            return colorMap[playerName]
+            // if not found, return random color
+            return colorMap[playerName] || '#'+Math.floor(Math.random()*16777215).toString(16);
         }
     },
     mounted () {
