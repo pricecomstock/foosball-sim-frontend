@@ -2,7 +2,7 @@
   <div class="columns is-centered">
       <div class="column is-6">
           <router-link class="box" v-for="(league, index) in leagues" :key="index" :to="'/league/' + league.name">
-              <div class="level">
+              <div class="level is-mobile">
                   <div class="level-left">
                       <div class="level-item">
                           {{ league.name }}
