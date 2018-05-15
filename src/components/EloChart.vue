@@ -14,7 +14,7 @@ export default {
             options: {
                 elements: {
                     line: {
-                        tension: 0.5, // disables bezier curves
+                        tension: 0, // disables bezier curves
                     }
                 }
             }
@@ -54,7 +54,9 @@ export default {
                     label: dataset.player,
                     data: dataset.elos,
                     borderColor: this.getLineColor(dataset.player),
-                    backgroundColor: 'rgba(0,0,0,0)'
+                    backgroundColor: 'rgba(0,0,0,0)',
+                    pointRadius: 0,
+                    pointHitRadius: 8
                 }
             })
         }
