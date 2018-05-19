@@ -1,8 +1,8 @@
 export default function getLineColor (playerName) { // we have traditional special colors
     const colorMap = {
         Price: '#66D',
-        Tritz: '#D66',
-        Elliott: '#8C8',
+        Tritz: '#D77',
+        Elliott: '#9C9',
         Mark: '#B82',
         Joe: '#ADF',
         Erick: '#FA4',

@@ -15,6 +15,12 @@ export default {
                     line: {
                         tension: 0, // disables bezier curves
                     }
+                },
+                title: {
+                    display: true,
+                    text: 'Elo Game by Game',
+                    fontSize: 24,
+                    fontFamily: "'Ubuntu', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
                 }
             }
         }

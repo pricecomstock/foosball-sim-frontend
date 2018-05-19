@@ -18,77 +18,63 @@ export default {
                     yAxes: [{
                         stacked: true
                     }]
+                },
+                title: {
+                    display: true,
+                    text: 'Shutouts Colored by Victim',
+                    fontSize: 24,
+                    fontFamily: "'Ubuntu', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
                 }
             }
         }
     },
     mounted () {
         /*
-            This creates an array like so:
+            This creates a 2d array like so:
             [
-                {
-                    playerName: "playerA",
-                    shutouts: [
-                        {
-                            victimName: "playerB",
-                            shutouts: numShutoutsOnPlayerB,
-                        },
-                        {
-                            victimName: "playerC",
-                            shutoutCount: numShutoutsOnPlayerC,
-                        }
-                    ]
-                }
-                ... and so on for each player
+                [playerAShutoutbyPlayerA, playerAShutoutbyPlayerB, playerAShutoutbyPlayerC],
+                [playerBShutoutbyPlayerA, playerBShutoutbyPlayerB, playerBShutoutbyPlayerC],
+                [playerCShutoutbyPlayerA, playerCShutoutbyPlayerB, playerCShutoutbyPlayerC],
             ]
         */
         console.log('shutouts', this.leagueData.gameHistory.filter( game => {
             return (game.loser.score === 0)
         }))
-        let shutoutCounts = {}
+        
+        // array of zeroes of length 8
+        let shutoutData = Array(this.leagueData.players.length).fill(0)
+        
+        // array of length 8, each item is an array of zeroes of length 8
+        shutoutData = shutoutData.map( () => {
+            return Array(this.leagueData.players.length).fill(0)
+        })
 
         this.leagueData.gameHistory.forEach( game => {
-            let winner = game.winner.player.name
-            let loser = game.loser.player.name
-
-            shutoutCounts[winner] = shutoutCounts[winner] || {} // {} if nothing is there
-            shutoutCounts[winner][loser] = shutoutCounts[winner][loser] || 0 // zero if nothing is there
             if (game.loser.score === 0) {
-                shutoutCounts[winner][loser] = 1 + shutoutCounts[winner][loser]
+                let winner = game.winner.player.name
+                let loser = game.loser.player.name
+                let winnerIndex = this.leagueData.players.indexOf(winner)
+                let loserIndex = this.leagueData.players.indexOf(loser)
+                console.log(winner, loser)
+                shutoutData[loserIndex][winnerIndex] = 1 + shutoutData[loserIndex][winnerIndex]
             }
         })
+        console.log('shutoutData', shutoutData)
 
-        let shutoutData = Object.keys(shutoutCounts).map( playerName => {
+        let datasets = shutoutData.map( (victimShutoutCounts, victimIndex) => {
             return {
-                playerName: playerName,
-                shutouts: Object.keys(shutoutCounts[playerName]).map( victimName => {
-                    return {
-                        victimName: victimName,
-                        shutoutCount: shutoutCounts[playerName][victimName]
-                    }
-                })
+                label: this.leagueData.players[victimIndex],
+                data: victimShutoutCounts,
+                borderColor: getPlayerColor(this.leagueData.players[victimIndex]),
+                backgroundColor: getPlayerColor(this.leagueData.players[victimIndex])
             }
         })
 
-
-        let datasets = []
-        shutoutData.forEach( playerShutouts => {
-            playerShutouts.shutouts.forEach ( victim => {
-                datasets.push( {
-                    label: victim.victimName,
-                    stack: this.leagueData.players.indexOf(playerShutouts.playerName),
-                    data: victim.shutoutCount,
-                    borderColor: getPlayerColor(playerShutouts.playerName),
-                    backgroundColor: getPlayerColor(victim.victimName)
-                }) 
-            })
-        })
-
-        console.log('datasets', datasets)
+        // console.log('datasets', datasets)
 
         this.chartData = {
             labels: this.leagueData.players, // however many samples there are, we want that as the x axis
-            data: datasets
+            datasets: datasets
         }
 
         this.renderChart(this.chartData, this.options)

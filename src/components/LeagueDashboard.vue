@@ -1,17 +1,18 @@
 <template>
   <div class="columns">
-      <div class="column is-9-desktop is-10-fullhd">
+      <div class="column is-12-desktop is-12-fullhd">
         <div class="tabs">
           <ul>
             <li v-for="(chart, index) in availableCharts" @click="activeChart = chart[1]" :class="{'is-active': activeChart == chart[1]}" :key="index"><a>{{ chart[0] }}</a></li>
           </ul>
         </div>
+        <p class="has-text-centered is-size-7">Click legend icons to toggle datasets!</p>
         <component v-if="dataLoaded" :is="activeChart" :leagueData="leagueData" :height="600" :width="1000"></component>
         <!-- <elo-chart v-if="dataLoaded" :players="players" :elos="elos" :height="600" :width="1000" ></elo-chart> -->
       </div>
-      <div class="column is-3-desktop is-2-fullhd">
+      <!-- <div class="column is-3-desktop is-2-fullhd">
         <game-feed :game-list="leagueData.gameHistory"></game-feed>
-      </div>
+      </div> -->
     </div>
 </template>
 
